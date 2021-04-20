@@ -32,19 +32,13 @@ public class TestCollision : MonoBehaviour
 
     void Update()
     {
-        Vector3 look = transform.TransformDirection(Vector3.forward);
-        Debug.DrawRay(transform.position + Vector3.up, look * 10, Color.red);
+        // Local <-> World <-> (Viewport <-> Screen) (화면)
 
-        RaycastHit[] hits = Physics.RaycastAll(transform.position + Vector3.up, look, 10);
-        foreach (RaycastHit hit in hits)
-        {
-            Debug.Log($"Raycast {hit.collider.gameObject.name}!");
-        }
+        // Screen
+        //Debug.Log(Input.mousePosition);         
 
-        //RaycastHit hit;
-        //if(Physics.Raycast(transform.position + Vector3.up, look, out hit, 10))
-        //{
-        //    Debug.Log($"Raycast {hit.collider.gameObject.name}!");
-        //}
+        // Viewport
+        Debug.Log(Camera.main.ScreenToViewportPoint(Input.mousePosition));
+
     }
 }

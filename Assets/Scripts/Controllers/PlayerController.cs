@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 
     bool _moveToDest = false;
     Vector3 _destPos;
+    float wait_run_ratio = 0;
 
     void Start()
     {
@@ -33,6 +34,21 @@ public class PlayerController : MonoBehaviour
                 transform.position += dir.normalized * moveDist;
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
             }
+        }
+
+        if(_moveToDest)
+        {
+            Animator anim = GetComponent<Animator>();
+            wait_run_ratio = Mathf.Lerp(wait_run_ratio, 1, 10.0f * Time.deltaTime);
+            anim.SetFloat("wait_run_ratio", wait_run_ratio);
+            anim.Play("WAIT_RUN");
+        }
+        else
+        {
+            Animator anim = GetComponent<Animator>();
+            wait_run_ratio = Mathf.Lerp(wait_run_ratio, 0, 10.0f * Time.deltaTime);
+            anim.SetFloat("wait_run_ratio", wait_run_ratio);
+            anim.Play("WAIT_RUN");
         }
     }
 
@@ -64,9 +80,6 @@ public class PlayerController : MonoBehaviour
 
     void OnMouseClicked(Define.MouseEvent evt)
     {
-        if (evt != Define.MouseEvent.Click)
-            return;
-
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         Debug.DrawRay(Camera.main.transform.position, ray.direction * 100.0f, Color.red, 1.0f);

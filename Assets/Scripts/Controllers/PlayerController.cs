@@ -75,6 +75,11 @@ public class PlayerController : MonoBehaviour
         anim.SetFloat("speed", 0);
     }
 
+    void OnRunEvent(int a)
+    {
+        Debug.Log($"뚜벅 뚜벅  {a}");
+    }
+
     void OnMouseClicked(Define.MouseEvent evt)
     {
         if (_state == PlayerState.Die)

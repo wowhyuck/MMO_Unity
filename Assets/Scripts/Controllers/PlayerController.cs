@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     {
         Managers.Input.MouseAction -= OnMouseClicked;
         Managers.Input.MouseAction += OnMouseClicked;
+
+        Managers.Resource.Instantiate("UI/UI_Button");
     }
 
     void Update()
@@ -73,11 +75,6 @@ public class PlayerController : MonoBehaviour
         // 애니메이션
         Animator anim = GetComponent<Animator>();
         anim.SetFloat("speed", 0);
-    }
-
-    void OnRunEvent(int a)
-    {
-        Debug.Log($"뚜벅 뚜벅  {a}");
     }
 
     void OnMouseClicked(Define.MouseEvent evt)

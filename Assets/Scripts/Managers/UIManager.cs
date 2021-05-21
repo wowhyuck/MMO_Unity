@@ -38,7 +38,7 @@ public class UIManager
         }
     }
 
-    public T ShoSceneUI<T>(string name = null) where T : UI_Scene
+    public T ShowSceneUI<T>(string name = null) where T : UI_Scene
     {
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;

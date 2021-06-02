@@ -5,9 +5,7 @@ using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    float _speed = 10.0f;
-
+    PlayerStat _stat;
     Vector3 _destPos;
 
     public enum PlayerState
@@ -15,12 +13,14 @@ public class PlayerController : MonoBehaviour
         Die,
         Moving,
         Idle,
+        Skill,
     }
 
     PlayerState _state = PlayerState.Idle;
 
     void Start()
     {
+        _stat = gameObject.GetComponent<PlayerStat>();
         Managers.Input.MouseAction -= OnMouseClicked;
         Managers.Input.MouseAction += OnMouseClicked;
     }
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             NavMeshAgent nma=gameObject.GetOrAddComponent<NavMeshAgent>();
-            float moveDist = Mathf.Clamp(_speed * Time.deltaTime, 0, dir.magnitude);
+            float moveDist = Mathf.Clamp(_stat.MoveSpeed * Time.deltaTime, 0, dir.magnitude);
 
             //nma.CalculatePath
             nma.Move(dir.normalized * moveDist);
@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
         // 애니메이션
         Animator anim = GetComponent<Animator>();
         // 현재 게임 상태에 대한 정보를 넘겨준다.
-        anim.SetFloat("speed", _speed);
+        anim.SetFloat("speed", _stat.MoveSpeed);
     }
 
     void UpdateIdle()
@@ -87,6 +87,8 @@ public class PlayerController : MonoBehaviour
         Animator anim = GetComponent<Animator>();
         anim.SetFloat("speed", 0);
     }
+
+    int _mask = (1 << (int)Define.Layer.Ground) | (1 << (int)Define.Layer.Monster);
 
     void OnMouseClicked(Define.MouseEvent evt)
     {
@@ -99,10 +101,19 @@ public class PlayerController : MonoBehaviour
 
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("Wall")))
+        if (Physics.Raycast(ray, out hit, 100.0f, _mask))
         {
             _destPos = hit.point;
             _state = PlayerState.Moving;
+        }
+
+        if (hit.collider.gameObject.layer == (int)Define.Layer.Monster)
+        {
+            Debug.Log("Monster Click");
+        }
+        else
+        {
+            Debug.Log("Ground Click");
         }
     }
 }

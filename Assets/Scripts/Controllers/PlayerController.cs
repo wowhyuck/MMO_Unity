@@ -52,6 +52,8 @@ public class PlayerController : MonoBehaviour
         _stat = gameObject.GetComponent<PlayerStat>();
         Managers.Input.MouseAction -= OnMouseEvent;
         Managers.Input.MouseAction += OnMouseEvent;
+
+        Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
     }
 
     void Update()
@@ -139,7 +141,16 @@ public class PlayerController : MonoBehaviour
 
     void OnHitEvent()
     {
-        Debug.Log("OnHitEvent");
+        if(_lockTarket != null)
+        {
+            //TODO
+            Stat tarketStat = _lockTarket.GetComponent<Stat>();
+            Stat myStat = gameObject.GetComponent<PlayerStat>();
+            int damage = Mathf.Max(0, myStat.Attack - tarketStat.Defense);
+            Debug.Log(damage);
+            tarketStat.Hp -= damage;
+        }
+
         if(_stopSkill)
         {
             State = PlayerState.Idle;

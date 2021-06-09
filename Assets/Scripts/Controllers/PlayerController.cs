@@ -74,9 +74,7 @@ public class PlayerController : BaseController
         {
             //TODO
             Stat tarketStat = _lockTarket.GetComponent<Stat>();
-            PlayerStat myStat = gameObject.GetComponent<PlayerStat>();
-            int damage = Mathf.Max(0, myStat.Attack - tarketStat.Defense);
-            tarketStat.Hp -= damage;
+            tarketStat.OnAttacked(_stat);
         }
 
         if(_stopSkill)

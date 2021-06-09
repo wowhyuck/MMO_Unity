@@ -58,9 +58,9 @@ public class MonsterController : BaseController
     }
 
     protected override void UpdateIdle() 
-    { 
+    {
         // TODO: 매니저가 생기면 옮기자
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        GameObject player = Managers.Game.GetPlayer();
         if (player == null)
             return;
 
@@ -86,16 +86,10 @@ public class MonsterController : BaseController
     {
         if (_lockTarket != null)
         {
-            Stat tarketStat = _lockTarket.GetComponent<Stat>();
-            int damage = Mathf.Max(0, _stat.Attack - tarketStat.Defense);
-            tarketStat.Hp -= damage;
+            Stat targetStat = _lockTarket.GetComponent<Stat>();
+            targetStat.OnAttacked(_stat);
 
-            if (tarketStat.Hp <= 0)
-            {
-                Managers.Game.Despawn(tarketStat.gameObject);
-            }
-
-            if (tarketStat.Hp > 0)
+            if (targetStat.Hp > 0)
             {
                 float distance = (_lockTarket.transform.position - transform.position).magnitude;
                 if (distance <= _attackRange)

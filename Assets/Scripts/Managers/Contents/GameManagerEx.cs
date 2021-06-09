@@ -6,6 +6,8 @@ public class GameManagerEx : MonoBehaviour
 {
     GameObject _player;
 
+    public GameObject GetPlayer() { return _player; }
+
     //Dictionary<int, GameObject> _players = new Dictionary<int, GameObject>();
     HashSet<GameObject> _monsters = new HashSet<GameObject>();
 
@@ -64,12 +66,4 @@ public class GameManagerEx : MonoBehaviour
 
         Managers.Resource.Destroy(go);
     }
-
-
-
-
-
-
-
-
 }

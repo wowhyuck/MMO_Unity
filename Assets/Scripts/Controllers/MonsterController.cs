@@ -15,6 +15,7 @@ public class MonsterController : BaseController
 
     public override void Init()
     {
+        WorldObjectType = Define.WorldObject.Monster;
         _stat = gameObject.GetComponent<Stat>();
 
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
@@ -86,9 +87,13 @@ public class MonsterController : BaseController
         if (_lockTarket != null)
         {
             Stat tarketStat = _lockTarket.GetComponent<Stat>();
-            Stat myStat = gameObject.GetComponent<Stat>();
-            int damage = Mathf.Max(0, myStat.Attack - tarketStat.Defense);
+            int damage = Mathf.Max(0, _stat.Attack - tarketStat.Defense);
             tarketStat.Hp -= damage;
+
+            if (tarketStat.Hp <= 0)
+            {
+                Managers.Game.Despawn(tarketStat.gameObject);
+            }
 
             if (tarketStat.Hp > 0)
             {

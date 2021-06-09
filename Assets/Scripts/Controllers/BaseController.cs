@@ -13,6 +13,8 @@ public abstract class BaseController : MonoBehaviour
     [SerializeField]
     protected GameObject _lockTarket;
 
+    public Define.WorldObject WorldObjectType { get; protected set; } = Define.WorldObject.None;
+
     public virtual Define.State State
     {
         get { return _state; }

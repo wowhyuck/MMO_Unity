@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ public class GameManagerEx : MonoBehaviour
     //Dictionary<int, GameObject> _players = new Dictionary<int, GameObject>();
     HashSet<GameObject> _monsters = new HashSet<GameObject>();
 
+    public Action<int> OnSpawnEvent;
+
     public GameObject Spawn(Define.WorldObject type, string path, Transform parent = null)
     {
         GameObject go = Managers.Resource.Instantiate(path, parent);
@@ -19,6 +22,8 @@ public class GameManagerEx : MonoBehaviour
         {
             case Define.WorldObject.Monster:
                 _monsters.Add(go);
+                if (OnSpawnEvent != null)
+                    OnSpawnEvent.Invoke(1);
                 break;
 
             case Define.WorldObject.Player:
@@ -50,6 +55,8 @@ public class GameManagerEx : MonoBehaviour
                     if (_monsters.Contains(go))
                     {
                         _monsters.Remove(go);
+                        if (OnSpawnEvent != null)
+                            OnSpawnEvent.Invoke(-1);
                     }
                 }
                 break;
